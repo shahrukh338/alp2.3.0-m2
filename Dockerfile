@@ -69,8 +69,10 @@ composer \
 xz &&\
 
 wget https://mirrors.aliyun.com/alpine/v3.11/main/x86_64/redis-5.0.14-r0.apk \
+	https://mirrors.aliyun.com/alpine/v3.3/main/x86_64/nginx-initscripts-1.8.0-r0.apk \
 	https://mirrors.aliyun.com/alpine/v3.3/main/x86_64/nginx-1.8.1-r2.apk && \
 apk add --allow-untrusted redis-5.0.14-r0.apk \
+	nginx-initscripts-1.8.0-r0.apk \
 	nginx-1.8.1-r2.apk &&\
 	
 	addgroup mysql mysql &&\
@@ -87,9 +89,10 @@ mv ioncube_loader_lin_7.2.so /var/www/ &&\
 #SSH
 mkdir ~/.ssh &&\
 adduser magento -D -g 1000 &&\
-echo  "magento ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers &&\
-echo 'magento ALL=(ALL:ALL) /usr/sbin/nginx, /usr/bin/php, /usr/bin/mysql, /usr/bin/composer, /usr/sbin/crond' | EDITOR='tee -a' visudo &&\
-echo "magento:magento" | chpasswd &&\
+echo  "magento ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers &&\
+#echo 'magento ALL=(ALL:ALL) /usr/sbin/nginx, /usr/bin/php, /usr/bin/mysql, /usr/bin/composer, /usr/sbin/crond' | EDITOR='tee -a' visudo &&\
+#echo "magento" | passwd --stdin magento &&\
+echo "magento:magento"|chpasswd &&\
 ssh-keygen -A &&\
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N '' &&\
 
@@ -98,9 +101,9 @@ wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.7.0/rabbit
 
 
 #ELASTIC
-wget --no-check-certificate -q -O elasticsearch.tar.gz "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.9.0-linux-x86_64.tar.gz" &&\
+wget --no-check-certificate -q -O elasticsearch.tar.gz "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.0.0-linux-x86_64.tar.gz" &&\
 tar -xvf elasticsearch.tar.gz -C /usr/share/ &&\
-mv /usr/share/elasticsearch-7.9.0 /usr/share/elasticsearch &&\
+mv /usr/share/elasticsearch-5.0.0 /usr/share/elasticsearch &&\
 adduser -D elasticsearch -g 1000 -h /usr/share/elasticsearch &&\
 mkdir -p /usr/share/elasticsearch/data /usr/share/elasticsearch/logs /usr/share/elasticsearch/config /usr/share/elasticsearch/config/scripts /usr/share/elasticsearch/plugins &&\
 rm -rf /usr/share/elasticsearch/modules/x-pack-ml /redis-5.0.14-r0.apk /nginx-1.8.1-r2.apk /tmp/* /var/cache/apk/* /elasticsearch.tar.gz /rabbitmq-server-generic-unix-latest-toolchain-3.7.0.tar.xz &&\
