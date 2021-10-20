@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.8
 
 RUN apk --update --no-cache add openrc \
 sudo \
@@ -56,9 +56,15 @@ unzip \
 wget \
 redis \
 bind-tools \
-openjdk11 \
+openjdk8 \
 openssh \
 erlang \
+mariadb \
+mariadb-client \
+mariadb-server-utils \
+mysql \
+mysql-client \
+mariadb-common \
 xz &&\
 
 wget https://freebsd.mirror.lavabit.com/alpine/v3.11/main/x86_64/mariadb-10.4.21-r0.apk \
