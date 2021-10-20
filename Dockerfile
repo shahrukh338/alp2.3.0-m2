@@ -65,24 +65,13 @@ mariadb-server-utils \
 mysql \
 mysql-client \
 mariadb-common \
+composer \
 xz &&\
 
-wget https://freebsd.mirror.lavabit.com/alpine/v3.11/main/x86_64/mariadb-10.4.21-r0.apk \
-	https://freebsd.mirror.lavabit.com/alpine/v3.11/main/x86_64/mariadb-client-10.4.21-r0.apk \
-	https://freebsd.mirror.lavabit.com/alpine/v3.11/main/x86_64/mariadb-server-utils-10.4.21-r0.apk \
-	https://freebsd.mirror.lavabit.com/alpine/v3.11/main/x86_64/mysql-10.4.21-r0.apk \
-	https://freebsd.mirror.lavabit.com/alpine/v3.11/main/x86_64/mysql-client-10.4.21-r0.apk \
-	https://freebsd.mirror.lavabit.com/alpine/v3.11/main/x86_64/mariadb-common-10.4.21-r0.apk \
-	https://ftp-stud.hs-esslingen.de/Mirrors/alpine/v3.13/main/x86_64/redis-6.0.16-r0.apk \
-	http://mirror.ette.biz/alpine/v3.12/main/x86_64/nginx-1.18.0-r3.apk && \
-apk add --allow-untrusted mariadb-client-10.4.21-r0.apk \
-	mariadb-10.4.21-r0.apk \
-	mariadb-server-utils-10.4.21-r0.apk \
-	mysql-10.4.21-r0.apk \
-	mysql-client-10.4.21-r0.apk \
-	mariadb-common-10.4.21-r0.apk \
-	redis-6.0.16-r0.apk \
-	nginx-1.18.0-r3.apk &&\
+wget https://mirrors.aliyun.com/alpine/v3.11/main/x86_64/redis-5.0.14-r0.apk \
+	https://mirrors.aliyun.com/alpine/v3.3/main/x86_64/nginx-1.8.1-r2.apk && \
+apk add --allow-untrusted redis-5.0.14-r0.apk \
+	nginx-1.8.1-r2.apk &&\
 	
 	addgroup mysql mysql &&\
 
@@ -92,11 +81,8 @@ ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.c
 openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=IN/ST=Telangana/L=Hyderabad/O=Kensium/CN=alpinehack.com" -keyout /etc/ssl/certs_2021/nginx-selfsigned.key -out /etc/ssl/certs_2021/nginx-selfsigned.crt &&\
 
 #IONCUBE and COMPOSER
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" HASH="$(wget -q -O - https://composer.github.io/installer.sig)" php -r "if (hash_file('SHA384', 'composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" &&\
-php composer-setup.php --install-dir=/usr/local/bin --filename=composer &&\
-composer self-update 2.0.0 &&\
-wget http://www.voipmonitor.org/ioncube/x86_64/ioncube_loader_lin_7.4.so &&\
-mv ioncube_loader_lin_7.4.so /var/www/ &&\
+wget http://www.voipmonitor.org/ioncube/x86_64/ioncube_loader_lin_7.2.so &&\
+mv ioncube_loader_lin_7.2.so /var/www/ &&\
 
 #SSH
 mkdir ~/.ssh &&\
@@ -108,7 +94,7 @@ ssh-keygen -A &&\
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N '' &&\
 
 #RABBIT
-wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.8.23/rabbitmq-server-generic-unix-latest-toolchain-3.8.23.tar.xz && tar xvf rabbitmq-server-generic-unix-latest-toolchain-3.8.23.tar.xz &&\
+wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.7.0/rabbitmq-server-generic-unix-latest-toolchain-3.7.0.tar.xz && tar xvf rabbitmq-server-generic-unix-latest-toolchain-3.7.0.tar.xz &&\
 
 
 #ELASTIC
@@ -117,10 +103,10 @@ tar -xvf elasticsearch.tar.gz -C /usr/share/ &&\
 mv /usr/share/elasticsearch-7.9.0 /usr/share/elasticsearch &&\
 adduser -D elasticsearch -g 1000 -h /usr/share/elasticsearch &&\
 mkdir -p /usr/share/elasticsearch/data /usr/share/elasticsearch/logs /usr/share/elasticsearch/config /usr/share/elasticsearch/config/scripts /usr/share/elasticsearch/plugins &&\
-rm -rf /usr/share/elasticsearch/modules/x-pack-ml /mariadb-10.4.21-r0.apk /mariadb-server-utils-10.4.21-r0.apk /mysql-10.4.21-r0.apk /mysql-client-10.4.21-r0.apk /mariadb-common-10.4.21-r0.apk /mariadb-client-10.4.21-r0.apk /redis-6.0.16-r0.apk /nginx-1.18.0-r3.apk /tmp/* /var/cache/apk/* /elasticsearch.tar.gz /rabbitmq-server-generic-unix-latest-toolchain-3.8.23.tar.xz &&\
+rm -rf /usr/share/elasticsearch/modules/x-pack-ml /redis-5.0.14-r0.apk /nginx-1.8.1-r2.apk /tmp/* /var/cache/apk/* /elasticsearch.tar.gz /rabbitmq-server-generic-unix-latest-toolchain-3.7.0.tar.xz &&\
 export ES_JAVA_OPTS="$ES_JAVA_OPTS -Djava.io.tmpdir=/usr/share/elasticsearch/tmp" &&\
 chown -R elasticsearch:elasticsearch /usr/share/elasticsearch /usr/lib/jvm &&\
-echo -e "export ES_JAVA_HOME=/usr/lib/jvm/java-11-openjdk\nexport JAVA_HOME=/usr/lib/jvm/java-11-openjdk\nexport PATH=$PATH:/rabbitmq_server-3.8.23/sbin/" >> /etc/profile
+echo -e "export ES_JAVA_HOME=/usr/lib/jvm/java-8-openjdk\nexport JAVA_HOME=/usr/lib/jvm/java-8-openjdk\nexport PATH=$PATH:/rabbitmq_server-3.7.0/sbin/" >> /etc/profile
 
 COPY php.ini /etc/php7/
 COPY sshd_config /etc/ssh/
