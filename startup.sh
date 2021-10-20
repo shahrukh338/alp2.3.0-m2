@@ -4,17 +4,17 @@ nginx -g 'daemon off;' &
 #php
 php-fpm7 -F &
 #rabbitmq
-./rabbitmq_server-3.8.23/sbin/rabbitmq-plugins enable --offline rabbitmq_management
+./rabbitmq_server-3.7.0/sbin/rabbitmq-plugins enable --offline rabbitmq_management
 sleep 2
-./rabbitmq_server-3.8.23/sbin/rabbitmq-server &
+./rabbitmq_server-3.7.0/sbin/rabbitmq-server &
 sleep 4
-./rabbitmq_server-3.8.23/sbin/rabbitmqctl add_user magento magento
+./rabbitmq_server-3.7.0/sbin/rabbitmqctl add_user magento magento
 sleep 3
-./rabbitmq_server-3.8.23/sbin/rabbitmqctl set_user_tags magento administrator
-./rabbitmq_server-3.8.23/sbin/rabbitmqctl set_permissions -p / magento ".*" ".*" ".*"
+./rabbitmq_server-3.7.0/sbin/rabbitmqctl set_user_tags magento administrator
+./rabbitmq_server-3.7.0/sbin/rabbitmqctl set_permissions -p / magento ".*" ".*" ".*"
 sleep 2
 pkill -f rabbitmq
-./rabbitmq_server-3.8.23/sbin/rabbitmq-server &
+./rabbitmq_server-3.7.0/sbin/rabbitmq-server &
 #elasticsearch
 su - elasticsearch -c /usr/share/elasticsearch/bin/elasticsearch &
 #redis
@@ -52,7 +52,7 @@ sleep 5
 echo "Starting all process"
 exec /usr/bin/mysqld --user=mysql --console --log-bin-trust-function-creators=1 &
 #MAGENTO_SSH  
-composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.3 /var/www/html/magento
+composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.3.0 /var/www/html/magento
 cd /var/www/html/magento
 php bin/magento setup:install --base-url=http://alpinehack.com --db-host=localhost --db-name=magento --db-user=magento --db-password=magento --admin-firstname=admin --admin-lastname=admin --admin-email=praneethpathange@gmail.com --admin-user=shannu --admin-password=kspl@1234 --language=en_US --currency=GBP --timezone=Europe/London --use-rewrites=1
 rm -rf generated/code
