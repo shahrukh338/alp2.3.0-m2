@@ -4,17 +4,17 @@ nginx -g 'daemon off;' &
 #php
 php-fpm7 -F &
 #rabbitmq
-./rabbitmq_server-3.8.23/sbin/rabbitmq-plugins enable --offline rabbitmq_management
+./rabbitmq_server-3.7.28/sbin/rabbitmq-plugins enable --offline rabbitmq_management
 sleep 2
-./rabbitmq_server-3.8.23/sbin/rabbitmq-server &
+./rabbitmq_server-3.7.28/sbin/sbin/rabbitmq-server &
 sleep 4
-./rabbitmq_server-3.8.23/sbin/rabbitmqctl add_user magento magento
+./rabbitmq_server-3.7.28/sbin/rabbitmqctl add_user magento magento
 sleep 3
-./rabbitmq_server-3.8.23/sbin/rabbitmqctl set_user_tags magento administrator
-./rabbitmq_server-3.8.23/sbin/rabbitmqctl set_permissions -p / magento ".*" ".*" ".*"
+./rabbitmq_server-3.7.28/sbin/rabbitmqctl set_user_tags magento administrator
+./rabbitmq_server-3.7.28/sbin/rabbitmqctl set_permissions -p / magento ".*" ".*" ".*"
 sleep 2
 pkill -f rabbitmq
-./rabbitmq_server-3.8.23/sbin/rabbitmq-server &
+./rabbitmq_server-3.7.28/sbin/sbin/rabbitmq-server &
 #elasticsearch
 su - elasticsearch -c /usr/share/elasticsearch/bin/elasticsearch &
 #redis

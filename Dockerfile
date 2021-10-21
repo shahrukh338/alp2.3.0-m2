@@ -98,19 +98,17 @@ ssh-keygen -A &&\
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N '' &&\
 
 #RABBIT
-wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.7.0/rabbitmq-server-generic-unix-latest-toolchain-3.7.0.tar.xz && tar xvf rabbitmq-server-generic-unix-latest-toolchain-3.7.0.tar.xz &&\
-
+wget https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.7.28/rabbitmq-server-generic-unix-3.7.28.tar.xz -O - | tar -xJ &&\
 
 #ELASTIC
-wget --no-check-certificate -q -O elasticsearch.tar.gz "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.0.0-linux-x86_64.tar.gz" &&\
-tar -xvf elasticsearch.tar.gz -C /usr/share/ &&\
-mv /usr/share/elasticsearch-5.0.0 /usr/share/elasticsearch &&\
+wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.0.tar.gz -O elasticsearch-5.6.0.tar.gz &&\
+tar -xf  elasticsearch-5.6*.tar.gz -C /usr/share/ &&\
 adduser -D elasticsearch -g 1000 -h /usr/share/elasticsearch &&\
 mkdir -p /usr/share/elasticsearch/data /usr/share/elasticsearch/logs /usr/share/elasticsearch/config /usr/share/elasticsearch/config/scripts /usr/share/elasticsearch/plugins &&\
-rm -rf /usr/share/elasticsearch/modules/x-pack-ml /redis-5.0.14-r0.apk /nginx-1.8.1-r2.apk /tmp/* /var/cache/apk/* /elasticsearch.tar.gz /rabbitmq-server-generic-unix-latest-toolchain-3.7.0.tar.xz &&\
+rm -rf /usr/share/elasticsearch/modules/x-pack-ml /redis-5.0.14-r0.apk /nginx-1.8.1-r2.apk /tmp/* /var/cache/apk/* /elasticsearch.tar.gz &&\
 export ES_JAVA_OPTS="$ES_JAVA_OPTS -Djava.io.tmpdir=/usr/share/elasticsearch/tmp" &&\
 chown -R elasticsearch:elasticsearch /usr/share/elasticsearch /usr/lib/jvm &&\
-echo -e "export ES_JAVA_HOME=/usr/lib/jvm/java-8-openjdk\nexport JAVA_HOME=/usr/lib/jvm/java-8-openjdk\nexport PATH=$PATH:/rabbitmq_server-3.7.0/sbin/" >> /etc/profile
+echo -e "export ES_JAVA_HOME=/usr/lib/jvm/java-8-openjdk\nexport JAVA_HOME=/usr/lib/jvm/java-8-openjdk\nexport PATH=$PATH:/rabbitmq_server-3.7.28/sbin/" >> /etc/profile
 
 COPY php.ini /etc/php7/
 COPY sshd_config /etc/ssh/
