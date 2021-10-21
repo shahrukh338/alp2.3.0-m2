@@ -92,7 +92,8 @@ adduser magento -D -g 1000 &&\
 echo  "magento ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers &&\
 #echo 'magento ALL=(ALL:ALL) /usr/sbin/nginx, /usr/bin/php, /usr/bin/mysql, /usr/bin/composer, /usr/sbin/crond' | EDITOR='tee -a' visudo &&\
 #echo "magento" | passwd --stdin magento &&\
-echo "magento:magento"|chpasswd &&\
+#echo "magento:magento"|chpasswd &&\
+usermod --password magento magento &&\
 ssh-keygen -A &&\
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N '' &&\
 
